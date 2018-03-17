@@ -8,14 +8,11 @@ import android.graphics.Paint;
 import android.os.Message;
 import android.view.SurfaceHolder;
 
-import java.util.logging.Handler;
-
 /**
  * Created by lining on 2018/3/17.
  */
 
 public class MyHandler extends android.os.Handler{
-
     private  Canvas canvas;   //画布
     private  int orientationDegree = 90;
     private  Matrix m;

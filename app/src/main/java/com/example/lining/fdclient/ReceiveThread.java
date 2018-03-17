@@ -3,7 +3,6 @@ package com.example.lining.fdclient;
 import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,19 +25,19 @@ public class ReceiveThread extends Thread  {
         this.serverIp = serverIp;
         play = new PlayThread(mHolder,msg);
     }
-    
+
     public void run() {
         byte buffer[] = new byte[4 * 1024];   //数据缓冲
         int len = 0;
+
+
         try {
             s = new Socket(serverIp, 8888);
             Log.d("State", "connect server!!!");
         } catch (IOException e2) {
             e2.printStackTrace();
         }
-
         play.start();    //开启播放线程，只能在循环之外
-
         //获取视频数据
         InputStream ins = null;
         try {
@@ -50,6 +49,7 @@ public class ReceiveThread extends Thread  {
         try {
             while ((len = ins.read(buffer)) != -1) {
                 outStream.write(buffer, 0, len);
+                Log.i("writing","--------------------------------------------");
             }
             ins.close();
         } catch (IOException e1) {
