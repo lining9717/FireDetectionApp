@@ -25,8 +25,6 @@ public class MyHandler extends android.os.Handler{
         paint = new Paint();
         this.mHolder = mHolder;
     }
-
-
     @Override
     public void handleMessage(Message msg) {
         if (msg.what == COMPLETED) {
