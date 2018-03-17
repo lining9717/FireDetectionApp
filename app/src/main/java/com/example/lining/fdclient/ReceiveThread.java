@@ -24,10 +24,9 @@ public class ReceiveThread extends Thread  {
 
     public ReceiveThread(SurfaceHolder mHolder,String serverIp){
         this.serverIp = serverIp;
-        play = new PlayThread(mHolder);
+        play = new PlayThread(mHolder,msg);
     }
-
-
+    
     public void run() {
         byte buffer[] = new byte[4 * 1024];   //数据缓冲
         int len = 0;
