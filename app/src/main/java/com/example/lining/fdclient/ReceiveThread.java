@@ -24,18 +24,16 @@ public class ReceiveThread extends Thread {
     private PlayThread play;    //定义播放视频的线程
     private int port;
     private static final int COMPLETED = 0x114;  //用于判断是否传递成功
-    public SurfaceHolder mHolder;
 
-
-    public ReceiveThread(SurfaceHolder mHolder, int port) {
+    public ReceiveThread(SurfaceHolder mHolder, int port,int surfaceHeigth,int surfaceWidth) {
         this.port = port;
-        play = new PlayThread(mHolder,msg);
+        play = new PlayThread(mHolder,msg,surfaceHeigth,surfaceWidth);
     }
 
     @Override
     public void run() {
         byte buffer[] = new byte[4 * 1024];   //数据缓冲
-        int len = 0;
+        int len;
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e2) {

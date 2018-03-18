@@ -15,10 +15,14 @@ public class PlayThread extends Thread {
     private  MyHandler playHandler;   //用于处理信息
     private static SurfaceHolder mHolder;// SurfaceView的控制器
     private Message msg;
+    private int sufaceViewHeight;
+    private int sufaceViewWidth;
 
-    public PlayThread(SurfaceHolder mHolder, Message msg){
+    public PlayThread(SurfaceHolder mHolder, Message msg,int surfaceHeigth,int surfaceWidth){
         this.mHolder = mHolder;
         this.msg = msg;
+        this.sufaceViewHeight =surfaceHeigth;
+        this .sufaceViewWidth = surfaceWidth;
     }
     public Handler getPlayHandler(){
         return playHandler;
@@ -26,8 +30,7 @@ public class PlayThread extends Thread {
     public void run() {
         super.run();
         Looper.prepare();
-        //信息处理，转换为视频，着重修改
-        playHandler = new MyHandler(mHolder);
+        playHandler = new MyHandler(mHolder,sufaceViewHeight,sufaceViewWidth);
         playHandler.handleMessage(msg);
         Looper.loop();
     }
