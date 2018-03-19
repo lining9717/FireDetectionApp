@@ -1,11 +1,12 @@
 package com.example.lining.fdclient;
 
-
-import android.app.Activity;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.Window;
@@ -13,7 +14,7 @@ import android.view.WindowManager;
 
 import java.util.concurrent.Semaphore;
 
-public class MainActivity extends Activity implements SurfaceHolder.Callback {
+public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback {
     private static final int sendPort = 8889;
     private ReceiveThread receiveThread;
 
@@ -36,6 +37,24 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                flag = true;
+                try {
+                    semaphore.acquire();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                receiveThread.play.playHandler.sendMessage(null);
+                this.finish(); // back button
+            }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         semaphore = new Semaphore(0);
@@ -46,6 +65,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
         setContentView(R.layout.activity_main);
 
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        
         int sufaceViewHeight;
         int sufaceViewWidth;
         SurfaceView mSurfaceView;  //SurfaceView
