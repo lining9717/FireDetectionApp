@@ -3,7 +3,7 @@
     <string name="introduce">此Android手机APP客户端是重庆大学软件学院国创项目《基于图像识别的无人机火灾报警系统的设计与实现》的配套软件，接收到无人机所拍摄的的视频数据通过此APP呈现。</string>
     <string name="attention">此APP客户端需要与电脑服务端配合使用，需要在同一局域网下进行工作。</string>
     <string name="input">请在下方输入服务端IP：</string>
-    <string name="btn_start">点击进入，开始运行</string>
+    <string name="btn_start">点击这里，开始运行</string>
     <string name="btn_exit">退出程序</string>
     <string name="author">Made By Team</string>
 </resources>

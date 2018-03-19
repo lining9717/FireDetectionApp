@@ -53,6 +53,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         /*开启连接线程*/
         new LinkThread(mHolder,serverIp,receivePort,sendPort,sufaceViewHeight,sufaceViewWidth).start();
 
+
+
     }
 
     //转换IP地址

@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by lining on 2018/3/16.
  */
@@ -39,6 +42,10 @@ public class Login extends Activity {
                     Toast.makeText(Login.this, "请输入服务端IP！", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (!isIP(ipname)) {
+                    Toast.makeText(Login.this, "请输入正确的IP地址！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Bundle data = new Bundle();
                 data.putString("ipname", ipname);
                 Intent intent = new Intent(Login.this, MainActivity.class);
@@ -52,5 +59,17 @@ public class Login extends Activity {
                 System.exit(1);
             }
         });
+    }
+
+    public boolean isIP(String addr)
+    {
+        if(addr.length() < 7 || addr.length() > 15 || "".equals(addr))
+            return false;
+        //判断IP格式和范围
+        String rexp = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
+        Pattern pat = Pattern.compile(rexp);
+        Matcher mat = pat.matcher(addr);
+        boolean ipAddress = mat.find();
+        return ipAddress;
     }
 }
