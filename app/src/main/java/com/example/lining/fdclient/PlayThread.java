@@ -12,7 +12,7 @@ import android.view.SurfaceHolder;
  * 用于播放的线程
  */
 public class PlayThread extends Thread {
-    private  MyHandler playHandler;   //用于处理信息
+    public   MyHandler playHandler;   //用于处理信息
     private static SurfaceHolder mHolder;// SurfaceView的控制器
     private Message msg;
     private int sufaceViewHeight;

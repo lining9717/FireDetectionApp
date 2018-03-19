@@ -1,19 +1,14 @@
 package com.example.lining.fdclient;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
 import android.widget.Toast;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +21,9 @@ public class Login extends Activity {
     private Button btn_start;
     private Button btn_exit;
     private EditText editText;
+    private static final int receivePort = 8888;
+    private IJudgeIP judgeIP;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +32,36 @@ public class Login extends Activity {
         btn_start = findViewById(R.id.btn_start);
         btn_exit = findViewById(R.id.btn_exit);
         editText = findViewById(R.id.edit_ip);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("提示");
+        progressDialog.setMessage("正在连接，请稍后....");
+
+        /*开启连接线程*/
+        judgeIP = new IJudgeIP() {
+            @Override
+            public void connectStatus(boolean status) {
+                if (!status) {
+                    Login.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            Toast.makeText(Login.this, "IP出错！", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
+                Login.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(Login.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
+
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,11 +74,9 @@ public class Login extends Activity {
                     Toast.makeText(Login.this, "请输入正确的IP地址！", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Bundle data = new Bundle();
-                data.putString("ipname", ipname);
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                intent.putExtras(data);
-                startActivity(intent);
+                new LinkThread(judgeIP, ipname, receivePort).start();
+                progressDialog.show();
+
             }
         });
         btn_exit.setOnClickListener(new View.OnClickListener() {
@@ -61,9 +87,8 @@ public class Login extends Activity {
         });
     }
 
-    public boolean isIP(String addr)
-    {
-        if(addr.length() < 7 || addr.length() > 15 || "".equals(addr))
+    public boolean isIP(String addr) {
+        if (addr.length() < 7 || addr.length() > 15 || "".equals(addr))
             return false;
         //判断IP格式和范围
         String rexp = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
