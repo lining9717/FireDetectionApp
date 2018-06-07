@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        
+
         int sufaceViewHeight;
         int sufaceViewWidth;
         SurfaceView mSurfaceView;  //SurfaceView
